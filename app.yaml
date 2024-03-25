@@ -1,0 +1,25 @@
+runtime: python39  # Specify the Python runtime version
+
+env_variables:
+  DJANGO_SETTINGS_MODULE: 'backend.settings'  # Set the Django settings module
+  APPENGINE_URL: https://friend-web-100003.uc.r.appspot.com
+
+handlers:
+- url: /static
+  static_dir: backend/static  # Specify the directory where static files are collected
+
+- url: /media
+  static_dir: backend/media/  # Specify the directory where media files are stored
+
+- url: /.*
+  script: apps.app  # Route all other requests to the Django application
+  secure: always
+
+- url: /favicon\.ico
+  static_files: static/images/favicon.ico
+  upload: static/images/favicon\.ico
+  secure: always
+  
+
+entrypoint: gunicorn -b :$PORT backend.wsgi
+
